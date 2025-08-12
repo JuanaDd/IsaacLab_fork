@@ -40,6 +40,7 @@ parser.add_argument("--debug_mass", action="store_true", help="Debug mass.")
 parser.add_argument("--save_viz", action="store_true", help="Visualize tactile data.")
 parser.add_argument("--use_tactile_rgb", action="store_true", help="Use tactile RGB sensor data collection.")
 parser.add_argument("--use_tactile_ff", action="store_true", help="Use tactile force field sensor data collection.")
+parser.add_argument("--play_reset", action="store_true", help="Play reset animation.")
 parser.add_argument(
     "--indenter_type", type=str, default="cube", choices=["cube", "sphere", "nut"], help="Type of indenter to use."
 )
@@ -363,8 +364,8 @@ def run_simulator(sim, scene: InteractiveScene):
 
 
     # Simulate physics
-    b_play_reset = False
-    b_benchmark = True
+    b_play_reset = args_cli.play_reset
+    b_benchmark = not b_play_reset
 
     while simulation_app.is_running() :
         # Reset every 200 steps

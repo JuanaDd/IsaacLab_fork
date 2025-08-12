@@ -15,14 +15,14 @@ fi
 
 # Configuration parameters
 TACSL_EXAMPLE="./tacsl/tacsl_example.py"
-BASE_ARGS="--headless --enable_cameras --indenter nut"
+BASE_ARGS="--headless --enable_cameras --indenter nut --use_tactile_ff"
 
 # Set different parameters based on debug mode
 if [[ "$DEBUG_MODE" == "true" ]]; then
     NUM_ENVS_ARRAY=(4)
     MAX_RUNS=2
 else
-    NUM_ENVS_ARRAY=(1 4 16 64 256 512)
+    NUM_ENVS_ARRAY=(1 4 16 64 256 512 1024 2048 4096)
     MAX_RUNS=3
 fi
 
