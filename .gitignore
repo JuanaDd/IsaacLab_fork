@@ -69,3 +69,11 @@ tests/
 
 # Docker history
 .isaac-lab-docker-history
+
+scripts/tactile_record/tactile_penetration_depth/
+
+scripts/tactile_record/tactile_shear_force/
+
+scripts/tactile_record/tactile_taxim/
+
+scripts/tactile_record/benchmark/res_txt/

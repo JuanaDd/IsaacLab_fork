@@ -1,0 +1,44 @@
+[
+  {
+    "num_envs": 1,
+    "total_fps": 246.48014519318812,
+    "physics_fps": 105.7935487613053,
+    "tactile_img_fps": 1044.703422711989,
+    "tactile_ff_fps": 322.61441321534556
+  },
+  {
+    "num_envs": 4,
+    "total_fps": 1041.1589901728605,
+    "physics_fps": 397.10558696607,
+    "tactile_img_fps": 4221.174887636517,
+    "tactile_ff_fps": 1383.452851934568
+  },
+  {
+    "num_envs": 16,
+    "total_fps": 3464.7925905459574,
+    "physics_fps": 1260.8384800538643,
+    "tactile_img_fps": 16710.4394960746,
+    "tactile_ff_fps": 4371.9742505176
+  },
+  {
+    "num_envs": 64,
+    "total_fps": 7137.35118798606,
+    "physics_fps": 2834.6253595420344,
+    "tactile_img_fps": 70687.70449261546,
+    "tactile_ff_fps": 7939.802044739207
+  },
+  {
+    "num_envs": 256,
+    "total_fps": 8041.301519139694,
+    "physics_fps": 4210.563119956704,
+    "tactile_img_fps": 263785.73007573694,
+    "tactile_ff_fps": 8294.3418621724
+  },
+  {
+    "num_envs": 512,
+    "total_fps": 8244.586764827543,
+    "physics_fps": 4396.240332660324,
+    "tactile_img_fps": 483309.92270684126,
+    "tactile_ff_fps": 8387.708682248436
+  }
+]
