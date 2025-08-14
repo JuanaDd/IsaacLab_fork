@@ -1004,6 +1004,9 @@ class TactileSensor(SensorBase):
             if self._tactile_visualizer is not None:
                 self._tactile_visualizer.set_visibility(False)
 
+    #########################################################################################
+    # Debug visualization
+    #########################################################################################
     def _debug_vis_callback(self, event):
         """Callback for debug visualization.
 

@@ -65,6 +65,7 @@ from isaaclab.sensors import CameraCfg, ContactSensorCfg, TactileSensorCfg, Tile
 from isaaclab.sensors.tacsl_sensor.tactile_viz_utils import visualize_penetration_depth, visualize_tactile_shear_image
 from isaaclab.utils import configclass
 from isaaclab.utils.assets import ISAACLAB_NUCLEUS_DIR
+from isaaclab.markers.visualization_markers import VisualizationMarkersCfg
 
 ASSET_DIR = f"{ISAACLAB_NUCLEUS_DIR}/Factory"
 
@@ -114,7 +115,7 @@ class TactileSensorsSceneCfg(InteractiveSceneCfg):
         prim_path="{ENV_REGEX_NS}/Robot/elastomer",
         # update_period=1 / 60,  # 60 Hz
         history_length=0,
-        debug_vis=False,
+        debug_vis=True,
         # Sensor configuration
         sensor_type="gelsight_r15",
         enable_camera_tactile=args_cli.use_tactile_rgb,
@@ -158,7 +159,18 @@ class TactileSensorsSceneCfg(InteractiveSceneCfg):
             ),
         ),
         # Visualization
-        visualize_tactile_points=True,
+        visualize_tactile_points=False,
+
+        visualizer_cfg = VisualizationMarkersCfg(
+            prim_path="/Visuals/TactileSensor",
+            markers={
+                "contact": sim_utils.SphereCfg(
+                    radius=0.0002,
+                    visual_material=sim_utils.PreviewSurfaceCfg(diffuse_color=(0.0, 0.0, 1.0)),
+                ),
+            },
+        )
+
     )
     # thumb_contact_sensor = ContactSensorCfg(
     #     prim_path="{ENV_REGEX_NS}/Robot/elastomer",
