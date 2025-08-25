@@ -23,7 +23,8 @@ import scipy
 import torch
 
 import cv2
-import imageio
+# import imageio
+import imageio.v2 as imageio
 
 gelsight_path = os.path.dirname(os.path.realpath(__file__))
 conf_r10 = {

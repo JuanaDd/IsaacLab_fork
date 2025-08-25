@@ -598,7 +598,8 @@ class TactileSensor(SensorBase):
             compliant_contact_stiffness=self.cfg.compliance_stiffness,
             compliant_contact_damping=self.cfg.compliant_damping,
         )
-        self._parent_prims = sim_utils.find_matching_prims(self.cfg.prim_path.rsplit("/", 1)[0])
+        # self._parent_prims = sim_utils.find_matching_prims(self.cfg.prim_path.rsplit("/", 1)[0])
+        self._parent_prims = sim_utils.find_matching_prims(self.cfg.prim_path)
         self._num_envs = len(self._parent_prims)
 
         # Apply material to each environment
@@ -613,6 +614,7 @@ class TactileSensor(SensorBase):
                 elastomer_collision_path = (
                     f"{env_prim_path}/{self.cfg.elastomer_link_name}/{self.cfg.elastomer_collision_path}"
                 )
+                print("---------------------elastomer_collision_path", elastomer_collision_path)
 
                 # Spawn the rigid body material
                 mat_path = spawn_rigid_body_material(elastomer_collision_path, material_cfg)
