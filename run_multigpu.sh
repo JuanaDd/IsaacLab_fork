@@ -1,0 +1,1 @@
+python -m torch.distributed.run     --nproc_per_node=2     --nnodes=1     scripts/reinforcement_learning/rl_games/train.py     --task Isaac-Cartpole-RGB-Camera-Direct-v0     --headless     --distributed     --num_envs 512 --max_iterations 12000
