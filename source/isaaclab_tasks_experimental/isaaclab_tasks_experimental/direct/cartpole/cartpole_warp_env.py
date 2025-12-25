@@ -246,6 +246,7 @@ class CartpoleWarpEnv(DirectRLEnvWarp):
                 self.states,
                 self.cfg.seed,
             ],
+            device=self.device,
         )
 
         # Bind torch buffers to warp buffers
@@ -279,6 +280,7 @@ class CartpoleWarpEnv(DirectRLEnvWarp):
                 self.actions,
                 self.action_scale,
             ],
+            device=self.device,
         )
 
     def _apply_action(self) -> None:
@@ -295,6 +297,7 @@ class CartpoleWarpEnv(DirectRLEnvWarp):
                 self._pole_dof_idx[0],
                 self.observations,
             ],
+            device=self.device,
         )
 
     def _get_rewards(self) -> None:
@@ -314,6 +317,7 @@ class CartpoleWarpEnv(DirectRLEnvWarp):
                 self.reset_terminated,
                 self.rewards,
             ],
+            device=self.device,
         )
 
     def _get_dones(self) -> None:
@@ -331,6 +335,7 @@ class CartpoleWarpEnv(DirectRLEnvWarp):
                 self.reset_time_outs,
                 self.reset_buf,
             ],
+            device=self.device,
         )
 
     def _reset_idx(self, mask: wp.array | None = None) -> None:
@@ -353,4 +358,5 @@ class CartpoleWarpEnv(DirectRLEnvWarp):
                 mask,
                 self.states,
             ],
+            device=self.device,
         )

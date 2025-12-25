@@ -238,7 +238,19 @@ class CartpoleCameraEnv(DirectRLEnv):
             env_ids = self._cartpole._ALL_INDICES
         super()._reset_idx(env_ids)
 
+        # determine data type
         data_type = "rgb" if "rgb" in self.cfg.tiled_camera.data_types else "depth"
+
+        # ensure env_ids is on the same device as the camera data
+        if isinstance(env_ids, torch.Tensor):
+            # get the device of the camera data
+            camera_device = self._tiled_camera.data.output[data_type].device
+            print(f"Camera device: {camera_device}, {self._tiled_camera.device}")
+            print(f"Env ids device: {env_ids.device}")
+            print(f"stacked frames device: {self.stacked_frames.device}")
+            if env_ids.device != camera_device:
+                env_ids = env_ids.to(camera_device)
+
         if data_type == "rgb":
             camera_data = self._tiled_camera.data.output[data_type][env_ids] / 255.0
             mean_tensor = torch.mean(camera_data, dim=(1, 2), keepdim=True)

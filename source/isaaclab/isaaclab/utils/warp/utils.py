@@ -43,10 +43,16 @@ def make_complete_data_from_torch_single_index(
     """
     if ids is None:
         # No ids are provided, so we are expecting complete data.
+        if value.device != torch.device(device):
+            value = value.to(device)
         value = wp.from_torch(value, dtype=dtype)
     else:
         # Create a complete data buffer from scratch
         complete = torch.zeros((N, *value.shape[1:]), dtype=torch.float32, device=device)
+        if value.device != torch.device(device):
+            value = value.to(device)
+        if isinstance(ids, torch.Tensor) and ids.device != torch.device(device):
+            ids = ids.to(device)
         complete[ids] = value
         value = wp.from_torch(complete, dtype=dtype)
     return value
@@ -77,15 +83,25 @@ def make_complete_data_from_torch_dual_index(
     """
     if (first_ids is None) and (second_ids is None):
         # No ids are provided, so we are expecting complete data.
+        if value.device != torch.device(device):
+            value = value.to(device)
         value = wp.from_torch(value, dtype=dtype)
     else:
         # Create a complete data buffer from scratch
         complete = torch.zeros((N, M, *value.shape[2:]), dtype=torch.float32, device=device)
+        if value.device != torch.device(device):
+            value = value.to(device)
         # Fill the complete data buffer with the value.
         if first_ids is None:
             first_ids = slice(None)
+        elif isinstance(first_ids, torch.Tensor) and first_ids.device != torch.device(device):
+            first_ids = first_ids.to(device)
+
         if second_ids is None:
             second_ids = slice(None)
+        elif isinstance(second_ids, torch.Tensor) and second_ids.device != torch.device(device):
+            second_ids = second_ids.to(device)
+
         if first_ids != slice(None) and second_ids != slice(None):
             if isinstance(first_ids, list):
                 first_ids = torch.tensor(first_ids, dtype=torch.int32, device=device)
@@ -121,5 +137,7 @@ def make_masks_from_torch_ids(
         first_mask[first_ids] = True
         first_mask = wp.from_torch(first_mask, dtype=wp.bool)
     elif isinstance(first_mask, torch.Tensor):
+        if first_mask.device != torch.device(device):
+            first_mask = first_mask.to(device)
         first_mask = wp.from_torch(first_mask, dtype=wp.bool)
     return first_mask

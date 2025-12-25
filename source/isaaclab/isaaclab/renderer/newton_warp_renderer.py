@@ -142,6 +142,7 @@ class NewtonWarpRenderer(RendererBase):
     def initialize(self):
         """Initialize the renderer."""
         self._model = NewtonManager.get_model()
+        print(f"[DEBUG]Newton Warp Renderer model device: {self._model.device}")
 
         self._tiled_camera_sensor = SensorTiledCamera(
             model=self._model,
@@ -150,6 +151,7 @@ class NewtonWarpRenderer(RendererBase):
             height=self._height,
             options=SensorTiledCamera.Options(colors_per_shape=True),
         )
+        print(f"[DEBUG]Newton Warp Renderer tiled camera sensor device: {self._tiled_camera_sensor.device}")
 
         # Note: camera rays will be computed when we have access to TiledCamera
         # for now use default 45 degree FOV
@@ -191,6 +193,8 @@ class NewtonWarpRenderer(RendererBase):
         # Raw buffer to hold data from the tiled camera sensor
         self._raw_output_rgb_buffer = self._tiled_camera_sensor.create_color_image_output()
         self._raw_output_depth_buffer = self._tiled_camera_sensor.create_depth_image_output()
+        print(f"initialize output buffers, {self._tiled_camera_sensor.device}, {self._tiled_camera_sensor.render_context.device}")
+        print(f"initialize output buffers, {self._raw_output_rgb_buffer.device}, {self._raw_output_depth_buffer.device}")
 
         self._output_data_buffers["rgba"] = wp.zeros(
             (self._num_envs, self._height, self._width, 4), dtype=wp.uint8, device=self._raw_output_rgb_buffer.device
@@ -250,7 +254,7 @@ class NewtonWarpRenderer(RendererBase):
         # Convert uint32 to uint8 RGBA
         reshape_rgba = self._raw_output_rgb_buffer.reshape((self._num_envs, self._height, self._width))
         self._output_data_buffers["rgba"] = wp.array(
-            ptr=reshape_rgba.ptr, shape=(*reshape_rgba.shape, 4), dtype=wp.uint8
+            ptr=reshape_rgba.ptr, shape=(*reshape_rgba.shape, 4), dtype=wp.uint8, device=self._raw_output_rgb_buffer.device
         )
 
         self._output_data_buffers["rgb"] = self._output_data_buffers["rgba"][:, :, :, :3]

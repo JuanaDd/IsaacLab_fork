@@ -226,6 +226,7 @@ class ActuatorBase(ABC):
                         None,
                         wp.array(self._joint_indices, dtype=wp.int32, device=self._device),
                     ],
+                    device=self._device,
                 )
             elif isinstance(cfg_value, dict):
                 # if dict, then parse the regular expression
@@ -240,6 +241,7 @@ class ActuatorBase(ABC):
                         None,
                         wp.array(indices_global, dtype=wp.int32, device=self._device),
                     ],
+                    device=self._device,
                 )
             else:
                 raise TypeError(
@@ -270,4 +272,5 @@ class ActuatorBase(ABC):
                 self._env_mask,
                 self.joint_mask,
             ],
+            device=self._device,
         )

@@ -444,6 +444,7 @@ class DirectRLEnvWarp(gym.Env):
                 self.episode_length_buf,
                 1,
             ],
+            device=self.device,
         )
         self._get_dones()
         self._get_rewards()

@@ -307,6 +307,7 @@ class AssetBase(ABC):
             PhysX handles are only enabled once the simulator starts playing. Hence, this function needs to be
             called whenever the simulator "plays" from a "stop" state.
         """
+        print(f"[DEBUG] _initialize_callback called for {self.cfg.prim_path}, initialized={self._is_initialized}")
         if not self._is_initialized:
             # obtain simulation related information
             # self._backend = SimulationManager.get_backend()
@@ -316,6 +317,7 @@ class AssetBase(ABC):
             try:
                 self._initialize_impl()
             except Exception as e:
+                print(f"[DEBUG] _initialize_callback exception: {e}")
                 if builtins.ISAACLAB_CALLBACK_EXCEPTION is None:
                     builtins.ISAACLAB_CALLBACK_EXCEPTION = e
             # set flag

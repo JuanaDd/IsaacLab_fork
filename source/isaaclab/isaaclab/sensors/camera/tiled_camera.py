@@ -204,7 +204,8 @@ class TiledCamera(Camera):
         self._renderer.render(self._data.pos_w, self._data.quat_w_world, self._data.intrinsic_matrices)
 
         for data_type, output_buffer in self._renderer.get_output().items():
-            self._data.output[data_type] = wp.to_torch(output_buffer)
+            print(f"Debug render data type: {data_type}, device: {output_buffer.device}, {self.device}")
+            self._data.output[data_type] = wp.to_torch(output_buffer).to(self.device)
 
     """
     Private Helpers

@@ -139,6 +139,7 @@ class RigidObject(BaseRigidObject):
                 mask,
                 self._data.ALL_ENV_MASK,
             ],
+            device=self.device,
         )
 
     def write_data_to_sim(self) -> None:
@@ -884,6 +885,7 @@ class RigidObject(BaseRigidObject):
                         env_mask,
                         body_mask,
                     ],
+                    device=self.device,
                 )
             if torques is not None:
                 wp.launch(
@@ -895,6 +897,7 @@ class RigidObject(BaseRigidObject):
                         env_mask,
                         body_mask,
                     ],
+                    device=self.device,
                 )
 
     """

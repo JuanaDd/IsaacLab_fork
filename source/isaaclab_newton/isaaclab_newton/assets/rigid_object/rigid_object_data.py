@@ -449,6 +449,7 @@ class RigidObjectData(BaseRigidObjectData):
                     NewtonManager.get_dt(),
                     self._body_com_acc_w.data,
                 ],
+                device=self.device,
             )
             # set the buffer data and timestamp
             self._body_com_acc_w.timestamp = self._sim_timestamp
@@ -472,6 +473,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_body_com_pos_b,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -491,6 +493,7 @@ class RigidObjectData(BaseRigidObjectData):
                     self._sim_bind_root_link_pose_w,
                     self._projected_gravity_b.data,
                 ],
+                device=self.device,
             )
             # set the buffer data and timestamp
             self._projected_gravity_b.timestamp = self._sim_timestamp
@@ -513,6 +516,7 @@ class RigidObjectData(BaseRigidObjectData):
                     self._sim_bind_root_link_pose_w,
                     self._heading_w.data,
                 ],
+                device=self.device,
             )
             # set the buffer data and timestamp
             self._heading_w.timestamp = self._sim_timestamp
@@ -533,6 +537,7 @@ class RigidObjectData(BaseRigidObjectData):
                     self._sim_bind_root_link_pose_w,
                     self._root_link_vel_b.data,
                 ],
+                device=self.device,
             )
             # set the buffer data and timestamp
             self._root_link_vel_b.timestamp = self._sim_timestamp
@@ -553,6 +558,7 @@ class RigidObjectData(BaseRigidObjectData):
                     self._sim_bind_root_link_pose_w,
                     self._root_com_vel_b.data,
                 ],
+                device=self.device,
             )
             # set the buffer data and timestamp
             self._root_com_vel_b.timestamp = self._sim_timestamp
@@ -579,6 +585,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.root_link_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -603,6 +610,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.root_link_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -627,6 +635,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_root_com_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -651,6 +660,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_root_com_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -678,6 +688,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_root_link_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -701,6 +712,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_root_link_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -724,6 +736,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_root_link_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -747,6 +760,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.root_link_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -770,6 +784,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.root_com_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -793,6 +808,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.root_com_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -816,6 +832,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_root_com_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -839,6 +856,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_root_com_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -862,6 +880,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_body_link_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -885,6 +904,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_body_link_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -908,6 +928,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.body_link_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -931,6 +952,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.body_link_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -954,6 +976,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.body_com_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -977,6 +1000,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.body_com_pose_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -1000,6 +1024,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_body_com_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -1023,6 +1048,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self._sim_bind_body_com_vel_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -1040,6 +1066,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.body_com_acc_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -1063,6 +1090,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.body_com_acc_w,
                 out,
             ],
+            device=self.device,
         )
         return out
 
@@ -1096,6 +1124,7 @@ class RigidObjectData(BaseRigidObjectData):
                 self.body_com_pose_b,
                 out,
             ],
+            device=self.device,
         )
         return out
 

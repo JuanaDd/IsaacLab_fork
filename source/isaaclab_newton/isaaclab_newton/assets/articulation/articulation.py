@@ -129,6 +129,7 @@ class Articulation(BaseArticulation):
         Args:
             cfg: A configuration instance.
         """
+        print(f"[DEBUG] Articulation.__init__ called for {cfg.prim_path}")
         super().__init__(cfg)
 
     """
@@ -1362,6 +1363,7 @@ class Articulation(BaseArticulation):
                         env_mask_,
                         body_mask_,
                     ],
+                    device=self.device,
                 )
             if torques is not None:
                 wp.launch(
@@ -1373,6 +1375,7 @@ class Articulation(BaseArticulation):
                         env_mask_,
                         body_mask_,
                     ],
+                    device=self.device,
                 )
 
     def set_joint_position_target(
@@ -1412,6 +1415,7 @@ class Articulation(BaseArticulation):
                 env_mask,
                 joint_mask,
             ],
+            device=self.device,
         )
 
     def set_joint_velocity_target(
@@ -1770,6 +1774,7 @@ class Articulation(BaseArticulation):
     """
 
     def _initialize_impl(self):
+        print(f"[DEBUG] Articulation._initialize_impl called for {self.cfg.prim_path}")
         # obtain global simulation view
         if self.cfg.articulation_root_prim_path is not None:
             # The articulation root prim path is specified explicitly, so we can just use this.
@@ -1918,6 +1923,7 @@ class Articulation(BaseArticulation):
 
     def _process_actuators_cfg(self):
         """Process and apply articulation joint properties."""
+        print(f"[DEBUG] Articulation._process_actuators_cfg called for {self.cfg.prim_path}")
         # create actuators
         self.actuators = dict()
         # flag for implicit actuators

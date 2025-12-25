@@ -395,6 +395,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.states,
                 self.cfg.seed,
             ],
+            device=self.device,
         )
 
         # Bind torch buffers to warp buffers
@@ -424,6 +425,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
             update_actions,
             dim=(self.num_envs, self.robot.num_joints),
             inputs=[actions, self.actions_mapped, self.joint_gears, self.action_scale],
+            device=self.device,
         )
 
     def _apply_action(self) -> None:
@@ -445,6 +447,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.potentials,
                 self.prev_potentials,
             ],
+            device=self.device,
         )
 
         wp.launch(
@@ -458,6 +461,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.rpy,
                 self.angle_to_target,
             ],
+            device=self.device,
         )
         wp.launch(
             scale_dof_pos,
@@ -467,6 +471,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.soft_joint_pos_limits,
                 self.dof_pos_scaled,
             ],
+            device=self.device,
         )
 
     def _get_observations(self) -> None:
@@ -488,6 +493,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.cfg.angular_velocity_scale,
                 self.robot.num_joints,
             ],
+            device=self.device,
         )
 
     def _get_rewards(self) -> None:
@@ -513,6 +519,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.cfg.alive_reward_scale,
                 self.rewards,
             ],
+            device=self.device,
         )
 
     def _get_dones(self) -> None:
@@ -530,6 +537,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.reset_time_outs,
                 self.reset_buf,
             ],
+            device=self.device,
         )
 
     def _reset_idx(self, mask: wp.array | None = None):
@@ -552,6 +560,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.root_vel_w,
                 mask,
             ],
+            device=self.device,
         )
         wp.launch(
             reset_joints,
@@ -563,6 +572,7 @@ class LocomotionWarpEnv(DirectRLEnvWarp):
                 self.joint_vel,
                 mask,
             ],
+            device=self.device,
         )
 
         self._compute_intermediate_values()
