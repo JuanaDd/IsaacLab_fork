@@ -19,6 +19,7 @@ from isaaclab.envs import DirectRLEnv, DirectRLEnvCfg, ViewerCfg
 from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.sensors import TiledCamera, TiledCameraCfg, save_images_to_file
 from isaaclab.sim import SimulationCfg
+from isaaclab.sim._impl.newton_manager_cfg import NewtonCfg
 from isaaclab.utils import configclass
 from isaaclab.utils.math import sample_uniform
 
@@ -32,7 +33,11 @@ class CartpoleRGBCameraEnvCfg(DirectRLEnvCfg):
     num_stacked_frames = 4
 
     # simulation
-    sim: SimulationCfg = SimulationCfg(dt=1 / 120, render_interval=decimation)
+    sim: SimulationCfg = SimulationCfg(
+        dt=1 / 120,
+        render_interval=decimation,
+        newton_cfg=NewtonCfg(use_cuda_graph=False),
+    )
 
     # robot
     robot_cfg: ArticulationCfg = CARTPOLE_CFG.replace(prim_path="/World/envs/env_.*/Robot")

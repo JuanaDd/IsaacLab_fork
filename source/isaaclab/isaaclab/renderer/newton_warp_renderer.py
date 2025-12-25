@@ -9,7 +9,7 @@ import math
 import torch
 
 import warp as wp
-from newton.sensors import TiledCameraSensor
+from newton.sensors import SensorTiledCamera
 
 from isaaclab.sim._impl.newton_manager import NewtonManager
 from isaaclab.utils.math import convert_camera_frame_orientation_convention
@@ -143,12 +143,12 @@ class NewtonWarpRenderer(RendererBase):
         """Initialize the renderer."""
         self._model = NewtonManager.get_model()
 
-        self._tiled_camera_sensor = TiledCameraSensor(
+        self._tiled_camera_sensor = SensorTiledCamera(
             model=self._model,
             num_cameras=1,  # TODO: currently only supports 1 camera per world
             width=self._width,
             height=self._height,
-            options=TiledCameraSensor.Options(colors_per_shape=True),
+            options=SensorTiledCamera.Options(colors_per_shape=True),
         )
 
         # Note: camera rays will be computed when we have access to TiledCamera
