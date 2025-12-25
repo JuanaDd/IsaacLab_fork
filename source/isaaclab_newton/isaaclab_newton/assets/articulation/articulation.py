@@ -247,6 +247,7 @@ class Articulation(BaseArticulation):
                 self._data.ALL_ENV_MASK,
                 mask,
             ],
+            device=self.device,
         )
 
     def write_data_to_sim(self):

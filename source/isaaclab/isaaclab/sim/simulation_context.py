@@ -444,6 +444,8 @@ class SimulationContext:
             self._set_physx_scene_attr(
                 self.physics_scene, "physxScene:enableGPUDynamics", True, Sdf.ValueTypeNames.Bool
             )
+            # Set device for Newton
+            NewtonManager.set_device(self.device)
         elif self.device.lower() == "cpu":
             self.settings.set_bool("/physics/suppressReadback", False)
             # Set CPU physics settings using string attribute names
