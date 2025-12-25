@@ -2170,6 +2170,8 @@ class ArticulationData(BaseArticulationData):
         .. caution:: This is possible if and only if the properties that we access are strided from newton and not
         indexed. Newton willing this is the case all the time, but we should pay attention to this if things look off.
         """
+        print(f"[DEBUG] ArticulationData device: {self.device}")
+        print(f"[DEBUG] NewtonManager device: {NewtonManager._device}")
         # -- root properties
         self._sim_bind_root_link_pose_w = self._root_view.get_root_transforms(NewtonManager.get_state_0())
         self._sim_bind_root_com_vel_w = self._root_view.get_root_velocities(NewtonManager.get_state_0())
@@ -2200,6 +2202,8 @@ class ArticulationData(BaseArticulationData):
         # -- joint states
         self._sim_bind_joint_pos = self._root_view.get_dof_positions(NewtonManager.get_state_0())
         self._sim_bind_joint_vel = self._root_view.get_dof_velocities(NewtonManager.get_state_0())
+        print(f"[DEBUG] ArticulationData device: {self.device}")
+        print(f"[DEBUG] _sim_bind_joint_vel device: {self._sim_bind_joint_vel.device}")
         # -- joint commands (sent to the simulation)
         self._sim_bind_joint_effort = self._root_view.get_attribute("joint_f", NewtonManager.get_control())
         self._sim_bind_joint_position_target = self._root_view.get_attribute(

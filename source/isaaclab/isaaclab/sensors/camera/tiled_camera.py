@@ -113,9 +113,16 @@ class TiledCamera(Camera):
 
     def reset(self, env_ids: Sequence[int] | None = None, env_mask: wp.array | torch.Tensor | None = None):
         if not self._is_initialized:
-            raise RuntimeError(
-                "TiledCamera could not be initialized. Please check that the renderer is properly configured."
-            )
+            try:
+                self._initialize_impl()
+                self._is_initialized = True
+            except Exception as e:
+                import traceback
+                print(f"[ERROR] TiledCamera initialization failed: {e}")
+                print(traceback.format_exc())
+                raise RuntimeError(
+                    f"TiledCamera could not be initialized: {e}. Please check that the renderer is properly configured."
+                )
         # reset the timestamps
         SensorBase.reset(self, env_ids)
         # resolve None

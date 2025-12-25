@@ -101,7 +101,9 @@ class DirectRLEnv(gym.Env):
             logger.warning("Seed not set for the environment. The environment creation may not be deterministic.")
 
         # create a simulation context to control the simulator
+        print(f"CHeck Simulatio    device: {self.cfg.sim.device}")
         if SimulationContext.instance() is None:
+            print(f"Create Simulation Context    device: {self.cfg.sim.device}")
             self.sim: SimulationContext = SimulationContext(self.cfg.sim)
         else:
             raise RuntimeError("Simulation context already exists. Cannot create a new one.")

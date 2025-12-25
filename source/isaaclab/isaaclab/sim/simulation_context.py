@@ -446,6 +446,7 @@ class SimulationContext:
             )
             # Set device for Newton
             NewtonManager.set_device(self.device)
+            print(f"[INFO] Set Newton device to: {self.device}")
         elif self.device.lower() == "cpu":
             self.settings.set_bool("/physics/suppressReadback", False)
             # Set CPU physics settings using string attribute names
