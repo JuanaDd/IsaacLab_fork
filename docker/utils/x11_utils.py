@@ -113,6 +113,12 @@ def x11_check(statefile: StateFile) -> tuple[list[str], dict[str, str]] | None:
             print("\tTo enable X11 forwarding, set 'X11_FORWARDING_ENABLED=1' in '.container.cfg'.")
 
     if is_x11_forwarding_enabled == "1":
+        # check if DISPLAY is set
+        if "DISPLAY" not in os.environ:
+            print("[WARNING] X11 forwarding is enabled, but DISPLAY environment variable is not set.")
+            print("[WARNING] Disabling X11 forwarding for this session.")
+            return None
+
         x11_envars = configure_x11(statefile)
         # If X11 forwarding is enabled, return the proper args to
         # compose the x11.yaml file. Else, return an empty string.

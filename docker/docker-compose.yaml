@@ -136,6 +136,27 @@ services:
     stdin_open: true
     tty: true
 
+  # This service is for the newton feature branch
+  isaac-lab-newton:
+    profiles: [ "newton" ]
+    env_file: .env.base
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.newton
+      args:
+        - ISAACLAB_PATH_ARG=${DOCKER_ISAACLAB_PATH}
+        - DOCKER_USER_HOME_ARG=${DOCKER_USER_HOME}
+        - ISAACSIM_ROOT_PATH_ARG=${DOCKER_ISAACSIM_ROOT_PATH}
+    image: isaac-lab-newton${DOCKER_NAME_SUFFIX-}
+    container_name: isaac-lab-newton${DOCKER_NAME_SUFFIX-}
+    environment: *default-isaac-lab-environment
+    volumes: *default-isaac-lab-volumes
+    network_mode: host
+    deploy: *default-isaac-lab-deploy
+    entrypoint: bash
+    stdin_open: true
+    tty: true
+
 volumes:
   # isaac-sim
   isaac-cache-kit:

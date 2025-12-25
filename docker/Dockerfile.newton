@@ -1,0 +1,93 @@
+# Copyright (c) 2022-2025, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+FROM nvcr.io/nvidia/base/ubuntu:noble-20250619 AS base
+
+# Set default RUN shell to bash
+SHELL ["/bin/bash", "-c"]
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+
+# Install dependencies and remove cache
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common \
+    wget \
+    build-essential \
+    cmake \
+    git \
+    libglib2.0-0 \
+    ncurses-term \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update && apt-get install -y --no-install-recommends \
+    python3.11 \
+    python3.11-dev \
+    python3.11-venv \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install pip for Python 3.11
+RUN wget https://bootstrap.pypa.io/get-pip.py && \
+    python3.11 get-pip.py && \
+    rm get-pip.py
+
+# Make python3.11 the default python
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 && \
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1
+
+# Trick isaaclab.sh into thinking we are in a virtual env so it uses system python
+# instead of looking for isaac-sim bundled python
+ENV VIRTUAL_ENV=/usr
+
+# Arguments
+ARG ISAACLAB_PATH_ARG=/workspace/isaaclab
+ENV ISAACLAB_PATH=${ISAACLAB_PATH_ARG}
+ARG DOCKER_USER_HOME_ARG=/root
+ENV DOCKER_USER_HOME=${DOCKER_USER_HOME_ARG}
+#ARG ISAACSIM_ROOT_PATH_ARG=/isaac-sim
+#ENV ISAACSIM_ROOT_PATH=${ISAACSIM_ROOT_PATH_ARG}
+
+# Install Torch and Torchvision
+RUN pip install -U torch==2.7.0 torchvision==0.22.0 --index-url https://download.pytorch.org/whl/cu128
+
+# Install Isaac Sim via pip
+#RUN pip install "isaacsim[all,extscache]==5.1.0" --extra-index-url https://pypi.nvidia.com
+
+# Copy the Isaac Lab directory (files to exclude are defined in .dockerignore)
+COPY ../ ${ISAACLAB_PATH}
+WORKDIR ${ISAACLAB_PATH}
+
+# Create symlinks for Isaac Sim to allow volume mounts and isaaclab.sh detection
+# We point _isaac_sim and /isaac-sim (or whatever ARG is) to the pip install location
+# RUN ISAACSIM_LOC=$(python -c "import isaacsim, os; print(os.path.dirname(isaacsim.__file__))") && \
+#     ln -sf ${ISAACSIM_LOC} ${ISAACLAB_PATH}/_isaac_sim && \
+#     ln -sf ${ISAACSIM_LOC} ${ISAACSIM_ROOT_PATH}
+
+# Ensure isaaclab.sh has execute permissions
+RUN chmod +x ${ISAACLAB_PATH}/isaaclab.sh
+
+# Install toml dependency
+RUN pip install toml
+
+# Install apt dependencies for extensions that declare them in their extension.toml
+RUN --mount=type=cache,target=/var/cache/apt \
+    python tools/install_deps.py apt ${ISAACLAB_PATH}/source && \
+    apt -y autoremove && apt clean autoclean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Isaac Lab dependencies
+# use pip caching to avoid reinstalling large packages
+RUN --mount=type=cache,target=${DOCKER_USER_HOME}/.cache/pip \
+    ./isaaclab.sh --install
+
+# Aliasing isaaclab.sh for convenience
+RUN echo "export ISAACLAB_PATH=${ISAACLAB_PATH}" >> ${HOME}/.bashrc && \
+    echo "alias isaaclab=${ISAACLAB_PATH}/isaaclab.sh" >> ${HOME}/.bashrc && \
+    echo "export TZ=$(date +%Z)" >> ${HOME}/.bashrc && \
+    echo "shopt -s histappend" >> /root/.bashrc && \
+    echo "PROMPT_COMMAND='history -a'" >> /root/.bashrc
+
+# Set entrypoint
+ENTRYPOINT ["/bin/bash"]
+
