@@ -20,15 +20,70 @@ from isaaclab.sensors.camera.camera_cfg import CameraCfg
 logger = logging.getLogger(__name__)
 
 
-def add_launcher_args(parser: argparse.ArgumentParser) -> None:
-    """Add simulation-launcher CLI arguments (``--headless``, ``--device``, etc.) to *parser*.
+def add_launcher_args(
+    parser: argparse.ArgumentParser,
+) -> None:
+    """Add simulation-launcher CLI arguments to *parser*.
 
-    Delegates to :meth:`AppLauncher.add_app_launcher_args` so that user scripts
-    do not need to import ``AppLauncher`` directly.
+    Delegates to :meth:`AppLauncher.add_app_launcher_args` when
+    Isaac Sim is available.  In kitless environments (e.g. Newton-only
+    Docker images without ``isaacsim``), a compatible subset of
+    arguments is registered directly so that training scripts can
+    still parse CLI options.
     """
-    from isaaclab.app import AppLauncher
+    try:
+        from isaaclab.app import AppLauncher
 
-    AppLauncher.add_app_launcher_args(parser)
+        AppLauncher.add_app_launcher_args(parser)
+    except (ImportError, ModuleNotFoundError):
+        _add_kitless_launcher_args(parser)
+
+
+def _add_kitless_launcher_args(
+    parser: argparse.ArgumentParser,
+) -> None:
+    """Register minimal launcher args for kitless mode.
+
+    Mirrors the most commonly used arguments from
+    :meth:`AppLauncher.add_app_launcher_args` so that existing
+    training scripts work unmodified when ``isaacsim`` is not
+    installed.
+    """
+    arg_group = parser.add_argument_group(
+        "app_launcher arguments (kitless fallback)",
+        description=("Subset of AppLauncher arguments available without Isaac Sim."),
+    )
+    arg_group.add_argument(
+        "--headless",
+        action="store_true",
+        default=False,
+        help="Force display off at all times.",
+    )
+    arg_group.add_argument(
+        "--enable_cameras",
+        action="store_true",
+        default=False,
+        help="Enable camera sensors.",
+    )
+    arg_group.add_argument(
+        "--device",
+        type=str,
+        default="cuda:0",
+        help="The device to run the simulation on.",
+    )
+    arg_group.add_argument(
+        "--visualizer",
+        type=str,
+        nargs="+",
+        default=None,
+        help="Visualizer backends (newton, rerun, viser).",
+    )
+    arg_group.add_argument(
+        "--visualizer_max_worlds",
+        type=int,
+        default=None,
+        help="Max worlds for Newton-based visualizers.",
+    )
 
 
 def _scan_config(cfg, predicates: list[Callable[[Any], bool]]) -> list[bool]:

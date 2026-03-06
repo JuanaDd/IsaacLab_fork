@@ -1,0 +1,104 @@
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers (https://github.com/isaac-sim/IsaacLab/blob/main/CONTRIBUTORS.md).
+# All rights reserved.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
+# Lightweight image for running Isaac Lab with the Newton physics backend.
+# No Isaac Sim dependency — uses MuJoCo-Warp and Newton's Warp-based renderer.
+
+FROM nvcr.io/nvidia/base/ubuntu:noble-20250619 AS base
+
+# Set default RUN shell to bash
+SHELL ["/bin/bash", "-c"]
+
+# Adds labels to the Dockerfile
+LABEL version="1.0.0"
+LABEL description="Dockerfile for building and running Isaac Lab with the Newton physics backend (no Isaac Sim)."
+
+# Arguments
+# Path to the Isaac Lab directory
+ARG ISAACLAB_PATH_ARG=/workspace/isaaclab
+ENV ISAACLAB_PATH=${ISAACLAB_PATH_ARG}
+# Home dir of docker user, typically '/root'
+ARG DOCKER_USER_HOME_ARG=/root
+ENV DOCKER_USER_HOME=${DOCKER_USER_HOME_ARG}
+
+# Set environment variables
+ENV LANG=C.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
+
+USER root
+
+# Install dependencies and Python 3.12 (native to Ubuntu Noble 24.04)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common \
+    build-essential \
+    cmake \
+    git \
+    libglib2.0-0 \
+    ncurses-term \
+    wget \
+    python3 \
+    python3-dev \
+    python3-venv \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install packages needed to build imgui-bundle on arm64 as no prebuilt pip wheel is provided
+RUN if [ "$(dpkg --print-architecture)" = "arm64" ]; then \
+        apt-get update && \
+        apt-get install -y --no-install-recommends \
+        libgl1-mesa-dev libopengl-dev libglx-dev \
+        libx11-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev && \
+        apt-get clean && rm -rf /var/lib/apt/lists/*; \
+    fi
+
+# Make python3 available as 'python' (required by isaaclab.sh VIRTUAL_ENV detection)
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1
+
+# Remove the PEP 668 marker so pip install works without --break-system-packages.
+# Safe in a container where there is no system package manager conflict.
+RUN rm -f /usr/lib/python*/EXTERNALLY-MANAGED
+
+# Install pip for Python 3.12
+RUN wget -q https://bootstrap.pypa.io/get-pip.py && \
+    python get-pip.py && \
+    rm get-pip.py
+
+# Trick isaaclab.sh into using system python via the VIRTUAL_ENV check,
+# instead of looking for an Isaac Sim bundled python.
+ENV VIRTUAL_ENV=/usr
+
+# Copy the Isaac Lab directory (files to exclude are defined in .dockerignore)
+COPY ../ ${ISAACLAB_PATH}
+
+# Fix the line endings for the shell scripts (Windows git may add \r)
+RUN find ${ISAACLAB_PATH} -type f -name "*.sh" -exec sed -i 's/\r$//' {} +
+
+# Ensure isaaclab.sh has execute permissions
+RUN chmod +x ${ISAACLAB_PATH}/isaaclab.sh
+
+# Install toml dependency (needed by setup.py to read extension.toml)
+RUN pip install toml
+
+# Install apt dependencies for extensions that declare them in their extension.toml
+RUN --mount=type=cache,target=/var/cache/apt \
+    python ${ISAACLAB_PATH}/tools/install_deps.py apt ${ISAACLAB_PATH}/source && \
+    apt -y autoremove && apt clean autoclean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Isaac Lab dependencies
+# use pip caching to avoid reinstalling large packages
+RUN --mount=type=cache,target=${DOCKER_USER_HOME}/.cache/pip \
+    ${ISAACLAB_PATH}/isaaclab.sh --install
+
+# Aliasing isaaclab.sh and python for convenience
+RUN echo "export ISAACLAB_PATH=${ISAACLAB_PATH}" >> ${HOME}/.bashrc && \
+    echo "alias isaaclab=${ISAACLAB_PATH}/isaaclab.sh" >> ${HOME}/.bashrc && \
+    echo "export TZ=$(date +%Z)" >> ${HOME}/.bashrc && \
+    echo "shopt -s histappend" >> /root/.bashrc && \
+    echo "PROMPT_COMMAND='history -a'" >> /root/.bashrc
+
+# Make working directory as the Isaac Lab directory
+WORKDIR ${ISAACLAB_PATH}
+
+ENTRYPOINT ["/bin/bash"]
