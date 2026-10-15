@@ -422,6 +422,7 @@ python-preference = "only-managed"
 package = false
 
 [tool.uv.sources]
+newton = { path = ".local/newton_h2_lab30", editable = true }
 omniverseclient = { index = "pypi-public" }
 ovphysx = { index = "pypi-public" }
 ovrtx = { index = "pypi-public" }

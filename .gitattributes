@@ -19,3 +19,6 @@ docs/source/_static/actuators/*.png binary linguist-generated
 
 *.bat text eol=crlf
 *.sh text eol=lf
+
+# Unified diff context lines contain a required leading space, including blank lines.
+scripts/h2/newton_vbd.patch whitespace=-blank-at-eol

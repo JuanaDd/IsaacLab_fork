@@ -16,6 +16,8 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        # Unified-diff blank context lines must retain their leading space.
+        exclude: '^scripts/h2/newton_vbd\.patch$'
       - id: check-symlinks
       - id: destroyed-symlinks
       - id: check-added-large-files
@@ -57,7 +59,8 @@ repos:
           - --license-filepath
           - .github/LICENSE_HEADER.txt
           - --use-current-year
-        exclude: "source/isaaclab_mimic/|scripts/imitation_learning/isaaclab_mimic/"
+        # H2 asset construction retains the Apache-2.0 notice from the Newton source.
+        exclude: "source/isaaclab_mimic/|scripts/imitation_learning/isaaclab_mimic/|source/isaaclab_tasks/isaaclab_tasks/contrib/h2_mimic/assets.py"
   # Apache 2.0 license for mimic files
   - repo: https://github.com/Lucas-C/pre-commit-hooks
     rev: v1.5.5

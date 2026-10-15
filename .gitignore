@@ -38,6 +38,12 @@ docker/.container.cfg
 !.vscode
 
 # Outputs
+/.local/
+/artifacts/
+/.venv/
+*.mp4
+# Local H2 MJCF assets are supplied separately from the task implementation.
+*.xml
 **/output/*
 **/outputs/*
 **/videos/*

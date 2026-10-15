@@ -170,6 +170,12 @@ How-to Guides
 
       .. container:: guide-entry
 
+         :doc:`H2 motion imitation with Newton VBD <h2_mimic_vbd>`
+
+         Train and visualize closed-loop H2 imitation policies with the Direct workflow.
+
+      .. container:: guide-entry
+
          :doc:`Configuring an RL agent </source/how-to/configuring_rl_training>`
 
          Customize agent settings and training hyperparameters.

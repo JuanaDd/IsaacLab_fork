@@ -19,7 +19,7 @@ prerelease-mode = "allow"
 overrides = [
     { name = "mujoco", specifier = "~=3.12.0" },
     { name = "mujoco-warp", specifier = "~=3.12.0" },
-    { name = "newton", extras = ["sim"], specifier = "==1.6.0" },
+    { name = "newton", extras = ["sim"], editable = ".local/newton_h2_lab30" },
     { name = "newton-usd-schemas", specifier = ">=0.4.1" },
     { name = "numpy", specifier = ">=2" },
     { name = "packaging", specifier = ">=20,<27" },
@@ -1743,12 +1743,12 @@ wheels = [
 
 [[package]]
 name = "isaaclab"
-version = "17.0.3"
+version = "18.0.0"
 source = { editable = "source/isaaclab" }
 
 [[package]]
 name = "isaaclab-assets"
-version = "0.7.1"
+version = "0.7.2"
 source = { editable = "source/isaaclab_assets" }
 dependencies = [
     { name = "isaaclab" },
@@ -2031,7 +2031,7 @@ requires-dist = [
     { name = "meshio", specifier = ">=5.3.5" },
     { name = "moviepy", marker = "extra == 'video'", specifier = ">=1.0.3,<2.0.0.dev0" },
     { name = "myst-parser", marker = "extra == 'dev'" },
-    { name = "newton", extras = ["sim"], specifier = "==1.6.0" },
+    { name = "newton", extras = ["sim"], editable = ".local/newton_h2_lab30" },
     { name = "newton-usd-schemas", specifier = ">=0.2.0" },
     { name = "numba", specifier = ">=0.63.1" },
     { name = "numpy", specifier = ">=2" },
@@ -2127,7 +2127,7 @@ requires-dist = [{ name = "isaaclab", editable = "source/isaaclab" }]
 
 [[package]]
 name = "isaaclab-mimic"
-version = "2.0.6"
+version = "2.0.7"
 source = { editable = "source/isaaclab_mimic" }
 dependencies = [
     { name = "isaaclab" },
@@ -2144,7 +2144,7 @@ requires-dist = [
 
 [[package]]
 name = "isaaclab-newton"
-version = "5.4.1"
+version = "6.0.0"
 source = { editable = "source/isaaclab_newton" }
 dependencies = [
     { name = "isaaclab" },
@@ -2155,7 +2155,7 @@ requires-dist = [{ name = "isaaclab", editable = "source/isaaclab" }]
 
 [[package]]
 name = "isaaclab-ov"
-version = "2.2.0"
+version = "3.0.1"
 source = { editable = "source/isaaclab_ov" }
 dependencies = [
     { name = "isaaclab" },
@@ -2170,7 +2170,7 @@ requires-dist = [
 
 [[package]]
 name = "isaaclab-physx"
-version = "6.0.0"
+version = "7.0.0"
 source = { editable = "source/isaaclab_physx" }
 dependencies = [
     { name = "isaaclab" },
@@ -2192,7 +2192,7 @@ requires-dist = [{ name = "isaaclab", editable = "source/isaaclab" }]
 
 [[package]]
 name = "isaaclab-rl"
-version = "0.16.3"
+version = "0.17.0"
 source = { editable = "source/isaaclab_rl" }
 dependencies = [
     { name = "isaaclab" },
@@ -2209,7 +2209,7 @@ requires-dist = [
 
 [[package]]
 name = "isaaclab-tasks"
-version = "18.0.2"
+version = "18.1.0"
 source = { editable = "source/isaaclab_tasks" }
 dependencies = [
     { name = "isaaclab" },
@@ -2250,7 +2250,7 @@ requires-dist = [{ name = "isaaclab", editable = "source/isaaclab" }]
 
 [[package]]
 name = "isaaclab-visualizers"
-version = "1.8.0"
+version = "1.9.0"
 source = { editable = "source/isaaclab_visualizers" }
 dependencies = [
     { name = "isaaclab" },
@@ -3345,12 +3345,9 @@ wheels = [
 [[package]]
 name = "newton"
 version = "1.6.0"
-source = { registry = "https://pypi.org/simple" }
+source = { editable = ".local/newton_h2_lab30" }
 dependencies = [
     { name = "warp-lang" },
-]
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/7b/d0/1955c2623762fd1d9f3bc0bb9866b6c0669e1e277202bdc16772520d7da1/newton-1.6.0-py3-none-any.whl", hash = "sha256:5eedebe17d7261ca39e8f97c2f2f20e22e7264d0aed01782f3cb1dd60180b872", size = 6159741, upload-time = "2026-09-10T13:50:10.666Z" },
 ]
 
 [package.optional-dependencies]
@@ -3358,6 +3355,70 @@ sim = [
     { name = "mujoco" },
     { name = "mujoco-warp" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "alphashape", marker = "extra == 'importers'", specifier = ">=1.3.1" },
+    { name = "cbor2", marker = "extra == 'examples'", specifier = ">=5.7.0" },
+    { name = "coacd", marker = "python_full_version < '3.14' and extra == 'importers'", specifier = ">=1.0.7" },
+    { name = "coverage", extras = ["toml"], marker = "extra == 'dev'", specifier = ">=7.8.0" },
+    { name = "fast-simplification", marker = "extra == 'importers'", specifier = ">=0.1.11" },
+    { name = "gitpython", marker = "extra == 'docs'", specifier = ">=3.1.58" },
+    { name = "gitpython", marker = "extra == 'examples'", specifier = ">=3.1.58" },
+    { name = "imgui-bundle", marker = "extra == 'examples'", specifier = ">=1.92.0" },
+    { name = "ipykernel", marker = "extra == 'docs'", specifier = ">=6.0.0,<7.0.0" },
+    { name = "jupyter-server-proxy", marker = "extra == 'notebook'", specifier = ">=4.5.0" },
+    { name = "jupyterlab", marker = "extra == 'notebook'", specifier = ">=4.5.7" },
+    { name = "meshio", marker = "extra == 'importers'", specifier = ">=5.3.5" },
+    { name = "mujoco", marker = "extra == 'sim'", specifier = "~=3.12.0" },
+    { name = "mujoco-warp", marker = "extra == 'sim'", specifier = "~=3.12.0" },
+    { name = "myst-parser", marker = "extra == 'docs'", specifier = ">=3.0.1" },
+    { name = "nbsphinx", marker = "extra == 'docs'", specifier = ">=0.9.0" },
+    { name = "newton", extras = ["examples"], marker = "extra == 'dev'" },
+    { name = "newton", extras = ["examples"], marker = "extra == 'notebook'" },
+    { name = "newton", extras = ["examples"], marker = "extra == 'torch-cu12'" },
+    { name = "newton", extras = ["examples"], marker = "extra == 'torch-cu13'" },
+    { name = "newton", extras = ["importers"], marker = "extra == 'docs'" },
+    { name = "newton", extras = ["importers"], marker = "extra == 'examples'" },
+    { name = "newton", extras = ["importers"], marker = "extra == 'rtx'" },
+    { name = "newton", extras = ["onnx"], marker = "extra == 'examples'" },
+    { name = "newton", extras = ["sim"], marker = "extra == 'examples'" },
+    { name = "newton-usd-schemas", marker = "extra == 'importers'", specifier = ">=0.5.0" },
+    { name = "open3d", marker = "(python_full_version < '3.13' and platform_machine != 'aarch64' and extra == 'importers') or (python_full_version < '3.13' and sys_platform != 'linux' and extra == 'importers')", specifier = ">=0.19.0" },
+    { name = "open3d", marker = "(python_full_version < '3.13' and platform_machine != 'aarch64' and extra == 'remesh') or (python_full_version < '3.13' and sys_platform != 'linux' and extra == 'remesh')", specifier = ">=0.19.0" },
+    { name = "ovrtx", marker = "extra == 'rtx'", specifier = ">=0.3" },
+    { name = "pillow", marker = "extra == 'examples'", specifier = ">=11.3.0" },
+    { name = "pycollada", marker = "extra == 'importers'", specifier = ">=0.9" },
+    { name = "pydata-sphinx-theme", marker = "extra == 'docs'", specifier = ">=0.16.1" },
+    { name = "pyfqmr", marker = "extra == 'remesh'", specifier = ">=0.5.0" },
+    { name = "pyglet", marker = "extra == 'examples'", specifier = ">=2.1.6,<3" },
+    { name = "pyglet", marker = "extra == 'rtx'", specifier = ">=2.1.6,<3" },
+    { name = "pypandoc", marker = "extra == 'docs'", specifier = ">=1.11" },
+    { name = "pypandoc-binary", marker = "extra == 'docs'", specifier = ">=1.11" },
+    { name = "pyyaml", marker = "extra == 'examples'", specifier = ">=6.0.2" },
+    { name = "requests", marker = "extra == 'importers'", specifier = ">=2.25.0" },
+    { name = "rerun-sdk", extras = ["notebook"], marker = "python_full_version < '3.14' and extra == 'notebook'", specifier = ">=0.27.1" },
+    { name = "resolve-robotics-uri-py", marker = "extra == 'importers'", specifier = ">=0.4.0" },
+    { name = "scipy", marker = "extra == 'importers'", specifier = ">=1.11.0" },
+    { name = "sphinx", marker = "extra == 'docs'", specifier = ">=7.4.7" },
+    { name = "sphinx-copybutton", marker = "extra == 'docs'", specifier = ">=0.5.0" },
+    { name = "sphinx-design", marker = "extra == 'docs'", specifier = ">=0.5.0,<=0.6.1" },
+    { name = "sphinx-tabs", marker = "extra == 'docs'", specifier = ">=3.3.0" },
+    { name = "sphinxcontrib-mermaid", marker = "extra == 'docs'", specifier = ">=1.0.0" },
+    { name = "torch", marker = "extra == 'torch-cu12'", specifier = ">=2.7.0", index = "https://download.pytorch.org/whl/cu128", conflict = { package = "newton", extra = "torch-cu12" } },
+    { name = "torch", marker = "extra == 'torch-cu13'", specifier = ">=2.10.0", index = "https://download.pytorch.org/whl/cu130", conflict = { package = "newton", extra = "torch-cu13" } },
+    { name = "trimesh", marker = "extra == 'importers'", specifier = ">=4.6.8" },
+    { name = "usd-core", marker = "python_full_version < '3.14' and platform_machine != 'aarch64' and extra == 'importers'", specifier = ">=25.5,<26.5" },
+    { name = "usd-exchange", marker = "python_full_version < '3.13' and platform_machine == 'aarch64' and extra == 'importers'", specifier = ">=2.2.0,<3" },
+    { name = "viser", marker = "extra == 'docs'", specifier = "==1.0.26" },
+    { name = "viser", marker = "extra == 'notebook'", specifier = "==1.0.26" },
+    { name = "warp-lang", specifier = ">=1.17.0" },
+    { name = "warp-nn", extras = ["onnx"], marker = "extra == 'onnx'", specifier = "==0.3.1" },
+]
+provides-extras = ["sim", "onnx", "importers", "remesh", "examples", "rtx", "torch-cu12", "torch-cu13", "dev", "docs", "notebook"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "asv", specifier = ">=0.6.4" }]
 
 [[package]]
 name = "newton-usd-schemas"
@@ -4865,7 +4926,7 @@ wheels = [
 
 [[package]]
 name = "rerun-sdk"
-version = "0.32.0a1"
+version = "0.31.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "attrs" },
@@ -4875,9 +4936,9 @@ dependencies = [
     { name = "typing-extensions" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ab/97/1daa4751a281bdb6cda3473229b2746779093ffaba70dd868a3074ef3392/rerun_sdk-0.32.0a1-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:0a821b30f287dabbf694aa1715e4dad0e31990cf4b612757c895f096885512e9", size = 133447478, upload-time = "2026-04-29T18:59:49.946Z" },
-    { url = "https://files.pythonhosted.org/packages/06/9d/84170e6722a09294b57d578fc1d01266c6e78408a544876f5271ecfa66a9/rerun_sdk-0.32.0a1-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:8045beb820372e092a6cf100fb87091fa804168e5cf8a0c29f97cdee56b134d8", size = 137724590, upload-time = "2026-04-29T18:59:55.238Z" },
-    { url = "https://files.pythonhosted.org/packages/ba/2f/09845dcdf14047cc8118566572628c533f57f6a232ee0b3fd61283b153e8/rerun_sdk-0.32.0a1-cp310-abi3-win_amd64.whl", hash = "sha256:1d6f8c3d50699ae075551a62e971730870a685cb74189b550a348561f37f9fe5", size = 118766780, upload-time = "2026-04-29T19:00:00.121Z" },
+    { url = "https://files.pythonhosted.org/packages/82/26/3ee39af44ddfb4b7fc9c13ce053acdd5f0d68e04da2fba1ef791674f3480/rerun_sdk-0.31.4-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:772030f74795d6722b26751c27d2f36f25dac39f870301034abb22d0f37cbe28", size = 130857887, upload-time = "2026-04-28T16:33:38.632Z" },
+    { url = "https://files.pythonhosted.org/packages/c1/f5/757fdf4b3b8213c4675505fb8517a42f537280801e6427227643e4a681dc/rerun_sdk-0.31.4-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:e9ce111ee3b46ffe8b3ae6b6c08db22283995f826215ca37925bdfaef9091cee", size = 135112616, upload-time = "2026-04-28T16:33:43.749Z" },
+    { url = "https://files.pythonhosted.org/packages/92/a4/f729f319da6ef072746599ba2aca12a8654c3aec42661e38920e7019741d/rerun_sdk-0.31.4-cp310-abi3-win_amd64.whl", hash = "sha256:82f4f17522be862b8f62361cad8044c0af051147b9de4a6bae4fa50703eef3b2", size = 116466579, upload-time = "2026-04-28T16:33:49.314Z" },
 ]
 
 [[package]]
