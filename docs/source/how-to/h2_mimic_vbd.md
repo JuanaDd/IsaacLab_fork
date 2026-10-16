@@ -158,3 +158,5 @@ Newton GL 录制的视频为 1920×1080、50 fps，全片解码通过。
 - `source/isaaclab_tasks/test/contrib/test_h2_mdp.py`：独立验证头部奖励作用于头部。
 
 训练和播放不使用额外的 benchmark、sim2sim 或分析 runner。
+
+将 VBD checkpoint 部署到原生 MJWarp，见 [H2 VBD → native MJWarp sim2sim](h2_vbd_to_mjwarp.md)。

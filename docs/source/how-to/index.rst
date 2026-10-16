@@ -176,6 +176,12 @@ How-to Guides
 
       .. container:: guide-entry
 
+         :doc:`H2 VBD to native MJWarp sim2sim <h2_vbd_to_mjwarp>`
+
+         Play H2 VBD checkpoints in the native mjlab model with shared policy ordering.
+
+      .. container:: guide-entry
+
          :doc:`Configuring an RL agent </source/how-to/configuring_rl_training>`
 
          Customize agent settings and training hyperparameters.

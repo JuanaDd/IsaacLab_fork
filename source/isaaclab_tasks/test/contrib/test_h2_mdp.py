@@ -10,7 +10,8 @@ import math
 import torch
 
 from isaaclab_tasks.contrib.h2_mimic import mdp
-from isaaclab_tasks.contrib.h2_mimic.assets import MJ_BODIES, POLICY_JOINTS, TRACKED_BODIES
+from isaaclab_tasks.contrib.h2_mimic.assets import ACTUATED_JOINTS, MJ_BODIES, POLICY_JOINTS, TRACKED_BODIES
+from isaaclab_tasks.contrib.h2_mimic.joints import policy_permutations
 
 
 def test_head_rewards_use_head_links_without_extending_critic_tracking():
@@ -45,3 +46,23 @@ def test_head_rewards_use_head_links_without_extending_critic_tracking():
         assert mdp.REWARD_WEIGHTS[name] == 0.5
     torch.testing.assert_close(terms["motion_body_pos"][0], terms["motion_body_pos"][1])
     torch.testing.assert_close(terms["motion_body_ori"][0], terms["motion_body_ori"][1])
+
+
+def test_native_joint_permutations_preserve_policy_observations_and_actions():
+    """Preserve named joint feedback when native storage uses a different order."""
+    joints = torch.arange(len(POLICY_JOINTS), dtype=torch.float32)[None]
+    action = torch.arange(len(ACTUATED_JOINTS), dtype=torch.float32)[None]
+    pose = torch.zeros(1, len(MJ_BODIES), 7)
+    pose[..., 6] = 1.0
+    velocity = torch.zeros(1, len(MJ_BODIES), 6)
+
+    def actor(q, qd, ref_q, ref_qd, previous_action):
+        return mdp.observations(q, qd, pose, velocity, ref_q, ref_qd, pose, [], q * 0, previous_action, q * 0, False)[
+            "policy"
+        ]
+
+    expected = actor(joints, -joints, joints + 100, joints + 200, action)
+    native = actor(joints.flip(-1), -joints.flip(-1), (joints + 100).flip(-1), (joints + 200).flip(-1), action.flip(-1))
+    actor_columns, action_columns = policy_permutations(POLICY_JOINTS[::-1], ACTUATED_JOINTS[::-1])
+    torch.testing.assert_close(native[:, actor_columns], expected)
+    torch.testing.assert_close(action[:, action_columns], action.flip(-1))

@@ -16,71 +16,22 @@ import newton
 import numpy as np
 import warp as wp
 
-MJ_JOINTS = (
-    "left_hip_pitch_joint",
-    "left_hip_roll_joint",
-    "left_hip_yaw_joint",
-    "left_knee_joint",
-    "left_ankle_roll_joint",
-    "left_ankle_pitch_joint",
-    "left_ankle_motor_joint",
-    "left_knee_motor_joint",
-    "right_hip_pitch_joint",
-    "right_hip_roll_joint",
-    "right_hip_yaw_joint",
-    "right_knee_joint",
-    "right_ankle_roll_joint",
-    "right_ankle_pitch_joint",
-    "right_ankle_motor_joint",
-    "right_knee_motor_joint",
-    "waist_yaw_joint",
-    "waist_roll_joint",
-    "waist_pitch_joint",
-    "head_pitch_joint",
-    "head_yaw_joint",
-    "left_shoulder_pitch_joint",
-    "left_shoulder_roll_joint",
-    "left_shoulder_yaw_joint",
-    "left_elbow_joint",
-    "left_wrist_roll_joint",
-    "left_wrist_pitch_joint",
-    "left_wrist_yaw_joint",
-    "right_shoulder_pitch_joint",
-    "right_shoulder_roll_joint",
-    "right_shoulder_yaw_joint",
-    "right_elbow_joint",
-    "right_wrist_roll_joint",
-    "right_wrist_pitch_joint",
-    "right_wrist_yaw_joint",
-    "torso_constraint_R_joint",
-    "torso_constraint_L_joint",
+# Preserve the existing asset-module imports while sharing the policy contract.
+from .joints import (
+    ACTUATED_JOINTS as ACTUATED_JOINTS,
 )
-
-# Linkage outputs closed by the pushrods; everything else is actuated (31).
-PASSIVE_JOINTS = (
-    "left_knee_joint",
-    "right_knee_joint",
-    "left_ankle_pitch_joint",
-    "right_ankle_pitch_joint",
-    "waist_roll_joint",
-    "waist_pitch_joint",
+from .joints import (
+    MJ_JOINTS as MJ_JOINTS,
 )
-# Original IsaacLab-mimic articulation order. The MJCF names ``ankle_motor``
-# alias the old USD names ``ankle_A``; simulator storage remains name-resolved.
-POLICY_JOINTS = (
-    *MJ_JOINTS[:4],
-    MJ_JOINTS[6],
-    *MJ_JOINTS[4:6],
-    *MJ_JOINTS[7:12],
-    MJ_JOINTS[14],
-    *MJ_JOINTS[12:14],
-    *MJ_JOINTS[15:35],
-    MJ_JOINTS[36],
-    MJ_JOINTS[35],
+from .joints import (
+    PASSIVE_JOINTS as PASSIVE_JOINTS,
 )
-POLICY_TO_MJ = tuple(MJ_JOINTS.index(name) for name in POLICY_JOINTS)
-ACTUATED_JOINTS = tuple(j for j in POLICY_JOINTS if j not in PASSIVE_JOINTS)
-assert len(ACTUATED_JOINTS) == 31
+from .joints import (
+    POLICY_JOINTS as POLICY_JOINTS,
+)
+from .joints import (
+    POLICY_TO_MJ as POLICY_TO_MJ,
+)
 
 # 38 bodies in MuJoCo order (== npz body axis == Newton MJCF DFS order).
 MJ_BODIES = (
